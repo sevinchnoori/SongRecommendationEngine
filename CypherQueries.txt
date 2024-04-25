@@ -1,0 +1,14 @@
+# Neo4J Cypher Queries
+
+load csv with headers from
+'file:///Users/sevinchnoori/Desktop/cs3500ta/dshw5/src/main/java/org/example/processedSongs.txt' as line
+
+
+merge (x:Song {artist: line.artist1, album: line.album1, track: line.track1})
+merge (y:Song {artist: line.artist2, album: line.album2, track: line.track2})
+merge (x)-[:IsSimilar {differenceScore: line.difference_score}]-(y)
+
+
+match (x:Song {album: "Is This It"})-[:IsSimilar]-(y:Song)
+where not y.album = 'Is This It' and not y.artist = 'The Strokes'
+return distinct y.artist, y.album, y.track LIMIT 5
